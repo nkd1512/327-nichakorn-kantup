@@ -1,0 +1,63 @@
+# GitHub Actions Workflow สำหรับการ Build และ Deploy Quasar SPA ไปยัง GitHub Pages
+
+name: Quasar Deploy to GitHub Pages
+
+# กำหนดให้ Workflow นี้รันเมื่อมีการ Push ไปที่สาขา 'cicd'
+on:
+  push:
+    branches:
+      - cicd
+
+# งานที่จะต้องทำใน Workflow
+jobs:
+  build_and_deploy:
+    # รันงานบน Ubuntu
+    runs-on: ubuntu-latest
+    
+    # ต้องกำหนดสิทธิ์เพื่ออนุญาตให้ Action เขียนไปยัง gh-pages branch ได้
+    permissions:
+      contents: write 
+
+    # ขั้นตอนการทำงาน (Steps)
+    steps:
+      # 1. Checkout โค้ดจาก Repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # จำเป็นต้องใช้ประวัติ Git แบบเต็มเพื่อ Deploy ด้วย peaceiris/actions-gh-pages
+          fetch-depth: 0 
+
+      # 2. ตั้งค่า Node.js (ใช้เวอร์ชัน 20)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' 
+
+      # 3. ติดตั้ง Dependencies ทั้งหมด
+      - name: Install dependencies
+        run: npm install
+
+      # 4. รันการทดสอบ Playwright (เพื่อยืนยันความถูกต้องก่อน Deploy)
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      
+      - name: Run Playwright Tests
+        # คำสั่งนี้จะ fail ถ้ามี test ไม่ผ่าน ซึ่งจะหยุดการ deploy
+        run: npx playwright test
+        
+      # 5. Build แอป Quasar ในโหมด SPA (Single Page Application)
+      - name: Build Quasar SPA
+        run: npx quasar build
+
+      # 6. Deploy ผลลัพธ์ไปยัง GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          # 🔒 ใช้ GitHub Token อัตโนมัติ (ไม่ต้องกำหนดเอง)
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # 📂 ผลลัพธ์ SPA Build จะอยู่ใน dist/spa
+          publish_dir: dist/spa
+          # 🗑️ ล้างไฟล์เก่าใน gh-pages branch ก่อน deploy
+          force_orphan: true
+          # 📝 ข้อความ Commit
+          commit_message: Deploy Quasar App via CI/CD

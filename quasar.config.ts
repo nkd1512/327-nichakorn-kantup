@@ -98,7 +98,10 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      // ** แก้ไขเป็นรูปแบบที่ถูกต้องตาม TypeScript: Array ชั้นเดียวของสตริง **
+      plugins: [
+        'Notify'
+      ],
     },
 
     // animations: 'all', // --- includes all animations
@@ -107,15 +110,15 @@ export default defineConfig((/* ctx */) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#sourcefiles
     // sourceFiles: {
-    //   rootComponent: 'src/App.vue',
-    //   router: 'src/router/index',
-    //   store: 'src/store/index',
-    //   pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
-    //   pwaServiceWorker: 'src-pwa/custom-service-worker',
-    //   pwaManifestFile: 'src-pwa/manifest.json',
-    //   electronMain: 'src-electron/electron-main',
-    //   electronPreload: 'src-electron/electron-preload'
-    //   bexManifestFile: 'src-bex/manifest.json
+    // 	 rootComponent: 'src/App.vue',
+    // 	 router: 'src/router/index',
+    // 	 store: 'src/store/index',
+    // 	 pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
+    // 	 pwaServiceWorker: 'src-pwa/custom-service-worker',
+    // 	 pwaManifestFile: 'src-pwa/manifest.json',
+    // 	 electronMain: 'src-electron/electron-main',
+    // 	 electronPreload: 'src-electron/electron-preload'
+    // 	 bexManifestFile: 'src-bex/manifest.json
     // },
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr

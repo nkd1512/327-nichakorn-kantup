@@ -1,11 +1,16 @@
 // @ts-check
-// ใช้วิธี require() ที่ถูกต้องสำหรับไฟล์ .js config
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
 /**
- * See https://playwright.dev/docs/test-configuration.
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
  */
-module.exports = defineConfig({
+// require('dotenv').config();
+
+/**
+ * @see https://playwright.dev/docs/test-configuration
+ */
+export default defineConfig({
   // Directory where tests are located
   testDir: './tests',
 
@@ -19,7 +24,8 @@ module.exports = defineConfig({
   retries: process.env.CI ? 2 : 0,
 
   // Opt out of parallel tests on CI.
-  workers: process.env.CI ? 1 : undefined,
+  // **FIX**: Changed 'undefined' to 'null' to resolve Vue/TS compatibility error
+  workers: process.env.CI ? 1 : null, // 🔴 แก้ไข undefined เป็น null
 
   // Reporter to use. See https://playwright.dev/docs/test-reporters
   reporter: 'html',

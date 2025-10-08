@@ -34,7 +34,6 @@ export default defineConfig((/* ctx */) => {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       // ** 🔴 (ข้อ 3.2) Public Path สำหรับ GitHub Pages **
-      // ต้องใส่ชื่อ repo ที่นี่: /<repo-name>/
       publicPath: '/327-nichakorn-kantup/',
 
       vitePlugins: [
@@ -60,6 +59,7 @@ export default defineConfig((/* ctx */) => {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {},
+      // แก้ไขส่วนนี้ให้เหลือแค่ชื่อ plugins ที่จำเป็น
       plugins: [
         'Notify'
       ],
